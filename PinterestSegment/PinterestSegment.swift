@@ -9,7 +9,7 @@
 import UIKit
 
 public protocol PinterestSegmentStyleDelegate: AnyObject {
-    func indicatorDidTap(index: Int)
+    func indicatorDidTap(id: String, index: Int)
 }
 
 public struct PinterestSegmentStyle {
@@ -33,18 +33,20 @@ public struct PinterestSegmentStyle {
     
 
     public struct TitleElement: Equatable {
+        public let id: String?
         public let title: String
         public let selectedImage: UIImage?
         public let normalImage: UIImage?
 
-        public init(title: String, selectedImage: UIImage? = nil, normalImage: UIImage? = nil) {
+        public init(id: String? = nil, title: String, selectedImage: UIImage? = nil, normalImage: UIImage? = nil) {
+            self.id = id
             self.title = title
             self.selectedImage = selectedImage
             self.normalImage = normalImage
         }
 
         public static func == (lhs: TitleElement, rhs: TitleElement) -> Bool {
-            return lhs.title == rhs.title && lhs.selectedImage == rhs.selectedImage && lhs.normalImage == rhs.selectedImage
+            return lhs.id == rhs.id && lhs.title == rhs.title && lhs.selectedImage == rhs.selectedImage && lhs.normalImage == rhs.selectedImage
         }
     }
 
@@ -160,7 +162,9 @@ public struct PinterestSegmentStyle {
         for (i, label) in titleLabels.enumerated() {
             if x >= label.frame.minX && x <= label.frame.maxX {
                 setSelectIndex(index: i, animated: true)
-                delegate?.indicatorDidTap(index: i)
+                if let id = titleElements[selectIndex].id {
+                    delegate?.indicatorDidTap(id: id, index: i)
+                }
                 break
             }
         }
