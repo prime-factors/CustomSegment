@@ -19,8 +19,8 @@ public struct PinterestSegmentStyle {
     public var titlePendingHorizontal: CGFloat = 14
     public var titlePendingVertical: CGFloat = 14
     public var titleFont = UIFont.boldSystemFont(ofSize: 14)
-    public var normalTitleColor = UIColor.lightGray
-    public var selectedTitleColor = UIColor.darkGray
+    public var normalTitleColor = UIColor.darkGray
+    public var selectedTitleColor = UIColor.gray
     public var selectedBorderColor = UIColor.clear
     public var normalBorderColor = UIColor.clear
     public var minimumWidth: CGFloat?
@@ -104,6 +104,7 @@ public struct PinterestSegmentStyle {
         view.contentInset = UIEdgeInsets.zero
         view.contentOffset = CGPoint.zero
         view.scrollsToTop = false
+        view.backgroundColor = UIColor(white: 1, alpha: 0.5)
         return view
     }()
 
