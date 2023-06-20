@@ -24,6 +24,7 @@ public struct PinterestSegmentStyle {
     public var selectedBorderColor = UIColor.clear
     public var normalBorderColor = UIColor.clear
     public var minimumWidth: CGFloat?
+    public var isEnabledBlurEffect: Bool = false
     public init() {}
 
 }
@@ -317,10 +318,12 @@ public struct PinterestSegmentStyle {
         // Set Cover
         indicator.layer.borderWidth = 2
         indicator.layer.borderColor = style.selectedBorderColor.cgColor
-        indicator.backgroundColor = style.indicatorColor
-        scrollView.addSubview(indicator)
-        scrollView.addSubview(selectContent)
-
+        indicator.backgroundColor = style.isEnabledBlurEffect ? UIColor.clear : style.indicatorColor
+        if (!style.isEnabledBlurEffect) {
+            scrollView.addSubview(indicator)
+            scrollView.addSubview(selectContent)
+        }
+        
         let coverX = titleLabels[0].frame.origin.x
         let coverY = (bounds.size.height - coverH) / 2
         let coverW = titleLabels[0].frame.size.width
@@ -330,6 +333,17 @@ public struct PinterestSegmentStyle {
 
         indicator.layer.cornerRadius = coverH/2
         selectedLabelsMaskView.layer.cornerRadius = coverH/2
+
+        if (style.isEnabledBlurEffect) {
+            let blurEffect = UIBlurEffect(style: .light)
+            let blurView = UIVisualEffectView(effect: blurEffect)
+            
+            blurView.frame = selectedLabelsMaskView.bounds
+            blurView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+            indicator.addSubview(blurView)
+            scrollView.addSubview(indicator)
+            scrollView.addSubview(selectContent)
+        }
 
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(PinterestSegment.handleTapGesture(_:)))
         addGestureRecognizer(tapGesture)
