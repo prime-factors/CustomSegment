@@ -8,6 +8,10 @@
 
 import UIKit
 
+public protocol PinterestSegmentStyleDelegate: AnyObject {
+    func indicatorDidTap(index: Int)
+}
+
 public struct PinterestSegmentStyle {
 
     public var indicatorColor = UIColor(white: 0.95, alpha: 1)
@@ -25,6 +29,8 @@ public struct PinterestSegmentStyle {
 }
 
 @IBDesignable public class PinterestSegment: UIControl {
+    public weak var delegate: PinterestSegmentStyleDelegate?
+    
 
     public struct TitleElement: Equatable {
         public let title: String
@@ -154,6 +160,7 @@ public struct PinterestSegmentStyle {
         for (i, label) in titleLabels.enumerated() {
             if x >= label.frame.minX && x <= label.frame.maxX {
                 setSelectIndex(index: i, animated: true)
+                delegate?.indicatorDidTap(index: i)
                 break
             }
         }
